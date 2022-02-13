@@ -26,6 +26,9 @@ export const App = () => {
     hideCompleted ? completedFilter  : showAll , 
     { sort: { createdAt: -1 } } )
     .fetch());
+  const pendingTaskCount = useTracker(()=> TasksCollection.find(completedFilter).count());
+
+  const pendingTasksTitle = `${pendingTaskCount === 0 ? '' : `${pendingTaskCount}` }`;
 
 
   return (
@@ -33,7 +36,7 @@ export const App = () => {
       <header>
         <div className='app-bar'>
           <div className='app-header'>
-            <h1>Easy Schedules</h1>
+            <h1>  📝️ Easy Schedules {pendingTasksTitle} </h1>
           </div>
         </div>
 

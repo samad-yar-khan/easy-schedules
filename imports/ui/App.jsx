@@ -22,10 +22,30 @@ export const App = () => {
   const tasks = useTracker(()=>TasksCollection.find({} , { sort: { createdAt: -1 } } ).fetch());
 
   return (
-    <div>
+    <div className='app'>
+      <header>
+        <div className='app-bar'>
+          <div className='app-header'>
+            <h1>Easy Schedules</h1>
+          </div>
+        </div>
+
+      </header>
+    <div className='main'>
       <TaskForm/>
-      <h1>Welcome to Meteor!</h1>
-      {tasks.map(task => <Task key={task._id} task={task} onCheckBoxClick={toggleCheck} deleteTask={deleteTask}/>)}
+      <ul className='tasks'>
+        {
+          tasks.map((task) =>{
+            return ( <Task 
+                        key={task._id} 
+                        task={task} 
+                        onCheckBoxClick={toggleCheck} 
+                        deleteTask={deleteTask}/>)
+                      }
+          )
+        }
+      </ul>
+    </div>
     </div>
   );
 

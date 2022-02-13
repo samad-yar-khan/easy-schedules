@@ -29,7 +29,6 @@ export const TaskForm = ()=>{
             <input 
                 type="text" 
                 name="task-text" 
-                value={text}
                 id="main-input" 
                 placeholder="Enter Task ..."
                 onChange={inputChange}

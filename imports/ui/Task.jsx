@@ -1,5 +1,23 @@
 import React from "react";
 
-export const Task  = (props)=> {
-    return (<li>{props.text}</li>);
+export const Task  = ({task , onCheckBoxClick , deleteTask})=> {
+    return (
+        <li>
+            <input
+                type='checkbox'
+                readOnly
+                checked={!!task.isChecked}
+                onClick={(e)=>{
+                    e.preventDefault();
+                    onCheckBoxClick(task);
+                }}
+            />
+            <span>
+                {task.text}
+            </span>
+
+            <button onClick={(e) => { e.preventDefault(); deleteTask(task)}}>
+                X
+            </button>
+        </li>);
 };

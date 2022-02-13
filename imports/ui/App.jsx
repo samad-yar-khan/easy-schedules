@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TasksCollection } from '../api/TasksCollection.js';
 import { useTracker } from 'meteor/react-meteor-data'
 import { Task } from './Task.jsx';
@@ -19,7 +19,14 @@ const deleteTask = (task)=>{
 
 export const App = () => {
 
-  const tasks = useTracker(()=>TasksCollection.find({} , { sort: { createdAt: -1 } } ).fetch());
+  const [hideCompleted , setHideCompleted ] = useState(false);
+  const completedFilter =  { isChecked : {$ne : true} };
+  const showAll = {}; 
+  const tasks = useTracker(()=>TasksCollection.find(
+    hideCompleted ? completedFilter  : showAll , 
+    { sort: { createdAt: -1 } } )
+    .fetch());
+
 
   return (
     <div className='app'>
@@ -33,16 +40,22 @@ export const App = () => {
       </header>
     <div className='main'>
       <TaskForm/>
+      <div className='filter'>
+        <button onClick={(e)=>{ e.preventDefault(); setHideCompleted(!hideCompleted);}}>
+        {hideCompleted ? 'Show All' : 'Hide Completed'}
+        </button>
+      </div>
+
       <ul className='tasks'>
         {
           tasks.map((task) =>{
-            return ( <Task 
-                        key={task._id} 
-                        task={task} 
-                        onCheckBoxClick={toggleCheck} 
-                        deleteTask={deleteTask}/>)
-                      }
-          )
+            return ( 
+              <Task 
+                key={task._id} 
+                task={task} 
+                onCheckBoxClick={toggleCheck} 
+                deleteTask={deleteTask}/>)
+          })
         }
       </ul>
     </div>

@@ -131,3 +131,13 @@ header {
 .tasks .done{
   background-color: rgb(229, 255, 189);
 }
+
+.filter {
+  display: flex;
+  justify-content: center;
+}
+
+.filter > button {
+  background-color: #62807e;
+  margin-bottom: 4px;
+}

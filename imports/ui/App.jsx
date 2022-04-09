@@ -20,17 +20,26 @@ const deleteTask = (task)=>{
   TasksCollection.remove(task._id);
 }
 
+const logout = () => Meteor.logout();
+
 export const App = () => {
 
   const user = useTracker(()=> Meteor.user());
   const [hideCompleted , setHideCompleted ] = useState(false);
   const completedFilter =  { isChecked : {$ne : true} };
-  const showAll = {}; 
+  const userFilter = user ? { userId: user._id } : {};
+
+  const pendingOnlyFilter = { ...completedFilter, ...userFilter };
   const tasks = useTracker(()=>TasksCollection.find(
-    hideCompleted ? completedFilter  : showAll , 
+    hideCompleted ? pendingOnlyFilter  : userFilter , 
     { sort: { createdAt: -1 } } )
     .fetch());
-  const pendingTaskCount = useTracker(()=> TasksCollection.find(completedFilter).count());
+  const pendingTaskCount = useTracker(()=> {
+    if(!user){
+      return 0;
+    }
+    return TasksCollection.find(pendingOnlyFilter).count()}
+    );
 
   const pendingTasksTitle = `${pendingTaskCount === 0 ? '' : `${pendingTaskCount}` }`;
 
@@ -49,7 +58,10 @@ export const App = () => {
 
       {user ?
         <Fragment>
-            <TaskForm/>
+            <div className="user" onClick={logout}>
+              {user.username} 🚪
+            </div>
+            <TaskForm user={user}/>
               <div className='filter'>
                 <button onClick={(e)=>{ e.preventDefault(); setHideCompleted(!hideCompleted);}}>
                 {hideCompleted ? 'Show All' : 'Hide Completed'}

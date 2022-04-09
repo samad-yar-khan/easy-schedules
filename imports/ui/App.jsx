@@ -8,16 +8,12 @@ import { Fragment } from 'react/cjs/react.production.min';
 import { LoginForm } from './LoginForm.jsx';
 
 
-const toggleCheck = (task)=>{
-  TasksCollection.update(task._id , {
-    $set :{
-      isChecked : !task.isChecked
-    }
-  });
+const toggleCheck = ({ _id, isChecked })=>{
+  Meteor.call('tasks.setIsChecked',_id,!isChecked);
 }
 
-const deleteTask = (task)=>{
-  TasksCollection.remove(task._id);
+const deleteTask = ({_id})=>{
+  Meteor.call('tasks.remove',_id);
 }
 
 const logout = () => Meteor.logout();
@@ -61,7 +57,7 @@ export const App = () => {
             <div className="user" onClick={logout}>
               {user.username} 🚪
             </div>
-            <TaskForm user={user}/>
+            <TaskForm />
               <div className='filter'>
                 <button onClick={(e)=>{ e.preventDefault(); setHideCompleted(!hideCompleted);}}>
                 {hideCompleted ? 'Show All' : 'Hide Completed'}

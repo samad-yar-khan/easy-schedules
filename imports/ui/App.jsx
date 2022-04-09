@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor'
-import { TasksCollection } from '../api/TasksCollection.js';
+import { TasksCollection } from '../db/TasksCollection.js';
 import { useTracker } from 'meteor/react-meteor-data'
 import { Task } from './Task.jsx';
 import { TaskForm } from './TaskForm.jsx';

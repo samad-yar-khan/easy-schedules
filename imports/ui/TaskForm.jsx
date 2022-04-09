@@ -9,9 +9,6 @@ export const TaskForm = ()=>{
         setText(e.target.value);
     }
 
-    // useEffect(()=>{
-
-    // },)
     const addTask = (e)=>{
         e.preventDefault();
         if(text.length !== 0){
@@ -22,7 +19,6 @@ export const TaskForm = ()=>{
         }
         setText("");
     }
-
 
     return (
         <form className="task-form">
